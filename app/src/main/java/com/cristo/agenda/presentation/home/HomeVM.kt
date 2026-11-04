@@ -1,7 +1,7 @@
 package com.cristo.agenda.presentation.home
 
 import androidx.lifecycle.ViewModel
-import com.cristo.agenda.domain.repository.AuthRepository
+import com.cristo.agenda.repository.AuthRepository
 
 class HomeViewModel(private val authRepository: AuthRepository) : ViewModel() {
 

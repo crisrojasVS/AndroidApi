@@ -1,6 +1,6 @@
-package com.cristo.agenda.domain.repository
+package com.cristo.agenda.repository
 
-import com.cristo.agenda.domain.model.Usuario
+import com.cristo.agenda.model.Usuario
 
 interface AuthRepository {
     suspend fun registrar(nombre: String, correo: String, password: String): Result<Usuario>

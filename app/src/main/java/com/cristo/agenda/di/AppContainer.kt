@@ -7,8 +7,8 @@ import com.cristo.agenda.data.remote.AgendaApi
 import com.cristo.agenda.data.remote.AuthInterceptor
 import com.cristo.agenda.data.repository.AuthRepositoryImpl
 import com.cristo.agenda.data.repository.EventoRepositoryImpl
-import com.cristo.agenda.domain.repository.AuthRepository
-import com.cristo.agenda.domain.repository.EventoRepository
+import com.cristo.agenda.repository.AuthRepository
+import com.cristo.agenda.repository.EventoRepository
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

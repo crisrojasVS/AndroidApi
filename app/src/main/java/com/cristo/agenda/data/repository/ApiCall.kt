@@ -1,7 +1,7 @@
 package com.cristo.agenda.data.repository
 
 import com.cristo.agenda.data.remote.dto.ErrorDto
-import com.cristo.agenda.domain.model.ApiError
+import com.cristo.agenda.model.ApiError
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException

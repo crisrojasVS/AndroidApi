@@ -6,8 +6,8 @@ import com.cristo.agenda.data.remote.AgendaApi
 import com.cristo.agenda.data.remote.dto.AuthResponseDto
 import com.cristo.agenda.data.remote.dto.LoginRequestDto
 import com.cristo.agenda.data.remote.dto.RegistroRequestDto
-import com.cristo.agenda.domain.model.Usuario
-import com.cristo.agenda.domain.repository.AuthRepository
+import com.cristo.agenda.model.Usuario
+import com.cristo.agenda.repository.AuthRepository
 
 class AuthRepositoryImpl(
     private val api: AgendaApi,

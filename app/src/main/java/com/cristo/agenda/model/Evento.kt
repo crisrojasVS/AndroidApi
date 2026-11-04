@@ -1,4 +1,4 @@
-package com.cristo.agenda.domain.model
+package com.cristo.agenda.model
 
 enum class TipoEvento { CITA, EVENTO }
 

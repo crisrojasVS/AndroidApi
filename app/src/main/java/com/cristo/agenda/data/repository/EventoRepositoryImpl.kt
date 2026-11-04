@@ -3,8 +3,8 @@ package com.cristo.agenda.data.repository
 import com.cristo.agenda.data.mapper.toDomain
 import com.cristo.agenda.data.mapper.toRequestDto
 import com.cristo.agenda.data.remote.AgendaApi
-import com.cristo.agenda.domain.model.Evento
-import com.cristo.agenda.domain.repository.EventoRepository
+import com.cristo.agenda.model.Evento
+import com.cristo.agenda.repository.EventoRepository
 
 class EventoRepositoryImpl(private val api: AgendaApi) : EventoRepository {
 

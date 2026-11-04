@@ -1,6 +1,6 @@
-package com.cristo.agenda.domain.repository
+package com.cristo.agenda.repository
 
-import com.cristo.agenda.domain.model.Evento
+import com.cristo.agenda.model.Evento
 
 interface EventoRepository {
     suspend fun listar(fecha: String? = null, titulo: String? = null): Result<List<Evento>>

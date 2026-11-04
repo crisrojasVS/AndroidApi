@@ -2,8 +2,8 @@ package com.cristo.agenda.data.mapper
 
 import com.cristo.agenda.data.remote.dto.EventoDto
 import com.cristo.agenda.data.remote.dto.EventoRequestDto
-import com.cristo.agenda.domain.model.Evento
-import com.cristo.agenda.domain.model.TipoEvento
+import com.cristo.agenda.model.Evento
+import com.cristo.agenda.model.TipoEvento
 
 fun EventoDto.toDomain(): Evento = Evento(
     id = id,
