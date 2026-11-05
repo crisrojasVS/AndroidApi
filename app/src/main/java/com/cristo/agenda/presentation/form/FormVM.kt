@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cristo.agenda.model.Evento
 import com.cristo.agenda.model.TipoEvento
+import com.cristo.agenda.presentation.components.aHora24
+import com.cristo.agenda.presentation.components.partesHora12
 import com.cristo.agenda.repository.EventoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +19,7 @@ data class FormUiState(
     val tipo: TipoEvento = TipoEvento.CITA,
     val fecha: String = "",
     val hora: String = "",
+    val esPm: Boolean = false,
     val descripcion: String = "",
     val duracion: String = "",
     val tituloError: String? = null,
@@ -47,13 +50,15 @@ class FormViewModel(private val eventoRepository: EventoRepository) : ViewModel(
         viewModelScope.launch {
             eventoRepository.obtener(id)
                 .onSuccess { evento ->
+                    val (horaTexto, pm) = evento.hora?.let { partesHora12(it) } ?: Pair("", false)
                     _uiState.update { actual ->
                         actual.copy(
                             id = evento.id,
                             titulo = evento.titulo,
                             tipo = evento.tipo,
                             fecha = evento.fecha,
-                            hora = evento.hora ?: "",
+                            hora = horaTexto,
+                            esPm = pm,
                             descripcion = evento.descripcion ?: "",
                             duracion = evento.duracion.toString(),
                             cargando = false
@@ -82,6 +87,10 @@ class FormViewModel(private val eventoRepository: EventoRepository) : ViewModel(
 
     fun onHoraChange(valor: String) {
         _uiState.update { it.copy(hora = valor, horaError = null, error = null) }
+    }
+
+    fun onPeriodoChange(esPm: Boolean) {
+        _uiState.update { it.copy(esPm = esPm) }
     }
 
     fun onDuracionChange(valor: String) {
@@ -120,7 +129,7 @@ class FormViewModel(private val eventoRepository: EventoRepository) : ViewModel(
             titulo = estado.titulo.trim(),
             tipo = estado.tipo,
             fecha = estado.fecha.trim(),
-            hora = estado.hora.trim().ifEmpty { null },
+            hora = aHora24(estado.hora, estado.esPm),
             descripcion = estado.descripcion.trim().ifEmpty { null },
             duracion = estado.duracion.trim().toInt()
         )

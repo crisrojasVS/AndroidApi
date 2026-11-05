@@ -21,11 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.cristo.agenda.model.estaCompletado
 import com.cristo.agenda.presentation.AppViewModelProvider
 import com.cristo.agenda.presentation.components.GradientHeader
 import com.cristo.agenda.presentation.components.PrimaryButton
 import com.cristo.agenda.presentation.components.TipoChip
 import com.cristo.agenda.presentation.components.fechaLarga
+import com.cristo.agenda.presentation.components.hora12
 import com.cristo.agenda.ui.theme.Coral
 import com.cristo.agenda.ui.theme.Gray
 
@@ -104,8 +106,9 @@ fun DetailScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Campo("FECHA", fechaLarga(evento.fecha))
-                        Campo("HORA", evento.hora ?: "Todo el día")
+                        Campo("HORA", evento.hora?.let { hora12(it) } ?: "Todo el día")
                         Campo("DURACIÓN", "${evento.duracion} minutos")
+                        Campo("ESTADO", if (evento.estaCompletado()) "Completado" else "Pendiente")
                         Campo("DESCRIPCIÓN", evento.descripcion ?: "Sin descripción")
                     }
                 }

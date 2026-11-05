@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cristo.agenda.model.TipoEvento
 import com.cristo.agenda.presentation.AppViewModelProvider
 import com.cristo.agenda.presentation.components.AppTextField
+import com.cristo.agenda.presentation.components.DateField
 import com.cristo.agenda.presentation.components.GradientHeader
 import com.cristo.agenda.presentation.components.PrimaryButton
 import com.cristo.agenda.ui.theme.Gray
@@ -110,18 +111,43 @@ fun FormScreen(
                         )
                     }
 
-                    AppTextField(
-                        valor = state.fecha,
-                        onValorChange = viewModel::onFechaChange,
-                        etiqueta = "Fecha (AAAA-MM-DD)",
+                    DateField(
+                        fecha = state.fecha,
+                        onFechaChange = viewModel::onFechaChange,
+                        etiqueta = "Fecha",
                         error = state.fechaError
                     )
-                    AppTextField(
-                        valor = state.hora,
-                        onValorChange = viewModel::onHoraChange,
-                        etiqueta = "Hora (HH:mm) - opcional",
-                        error = state.horaError
-                    )
+
+                    Text("Hora (opcional)", color = Gray, fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.Top
+                    ) {
+                        AppTextField(
+                            valor = state.hora,
+                            onValorChange = viewModel::onHoraChange,
+                            etiqueta = "Ej. 4:30",
+                            error = state.horaError,
+                            modifier = Modifier.weight(1.2f)
+                        )
+                        BotonTipo(
+                            texto = "AM",
+                            seleccionado = !state.esPm,
+                            onClick = { viewModel.onPeriodoChange(false) },
+                            modifier = Modifier
+                                .weight(0.6f)
+                                .padding(top = 5.dp)
+                        )
+                        BotonTipo(
+                            texto = "PM",
+                            seleccionado = state.esPm,
+                            onClick = { viewModel.onPeriodoChange(true) },
+                            modifier = Modifier
+                                .weight(0.6f)
+                                .padding(top = 5.dp)
+                        )
+                    }
+
                     AppTextField(
                         valor = state.duracion,
                         onValorChange = viewModel::onDuracionChange,

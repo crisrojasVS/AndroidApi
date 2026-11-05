@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cristo.agenda.model.ApiError
 import com.cristo.agenda.model.Evento
+import com.cristo.agenda.model.estaCompletado
 import com.cristo.agenda.repository.AuthRepository
 import com.cristo.agenda.repository.EventoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +38,10 @@ class HomeViewModel(
         viewModelScope.launch {
             eventoRepository.listar(titulo = titulo)
                 .onSuccess { lista ->
-                    _uiState.update { actual -> actual.copy(cargando = false, eventos = lista) }
+                    // Los pendientes van arriba y los completados al final
+                    _uiState.update { actual ->
+                        actual.copy(cargando = false, eventos = lista.sortedBy { it.estaCompletado() })
+                    }
                 }
                 .onFailure { e ->
                     if ((e as? ApiError)?.codigo == 401) {

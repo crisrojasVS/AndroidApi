@@ -4,18 +4,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.cristo.agenda.model.Evento
 import com.cristo.agenda.model.TipoEvento
+import com.cristo.agenda.model.estaCompletado
 import com.cristo.agenda.ui.theme.CitaBackground
 import com.cristo.agenda.ui.theme.CitaText
+import com.cristo.agenda.ui.theme.CompletedBackground
 import com.cristo.agenda.ui.theme.EventoBackground
 import com.cristo.agenda.ui.theme.EventoText
 import com.cristo.agenda.ui.theme.Gray
@@ -35,10 +40,30 @@ fun TipoChip(tipo: TipoEvento, modifier: Modifier = Modifier) {
 }
 
 @Composable
+fun CompletadoChip(modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .background(CompletedBackground, RoundedCornerShape(50))
+            .padding(horizontal = 10.dp, vertical = 4.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Check,
+            contentDescription = null,
+            tint = Gray,
+            modifier = Modifier.size(14.dp)
+        )
+        Spacer(Modifier.width(4.dp))
+        Text("Completado", color = Gray, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+    }
+}
+
+@Composable
 fun EventoCard(evento: Evento, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val esCita = evento.tipo == TipoEvento.CITA
     val fondo = if (esCita) CitaBackground else EventoBackground
     val texto = if (esCita) CitaText else EventoText
+    val completado = evento.estaCompletado()
 
     Card(
         shape = RoundedCornerShape(22.dp),
@@ -64,14 +89,23 @@ fun EventoCard(evento: Evento, onClick: () -> Unit, modifier: Modifier = Modifie
                 Text(mesCortoDe(evento.fecha), color = texto, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
             Column {
-                Text(evento.titulo, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                 Text(
-                    text = "${evento.hora ?: "Todo el día"} · ${evento.duracion} min",
+                    text = evento.titulo,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (completado) Gray else Color.Unspecified,
+                    textDecoration = if (completado) TextDecoration.LineThrough else null
+                )
+                Text(
+                    text = "${evento.hora?.let { hora12(it) } ?: "Todo el día"} · ${evento.duracion} min",
                     color = Gray,
                     fontSize = 14.sp,
                     modifier = Modifier.padding(top = 3.dp, bottom = 8.dp)
                 )
-                TipoChip(evento.tipo)
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TipoChip(evento.tipo)
+                    if (completado) CompletadoChip()
+                }
             }
         }
     }
