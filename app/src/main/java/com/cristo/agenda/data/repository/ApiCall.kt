@@ -2,6 +2,7 @@ package com.cristo.agenda.data.repository
 
 import com.cristo.agenda.data.remote.dto.ErrorDto
 import com.cristo.agenda.model.ApiError
+import kotlinx.coroutines.CancellationException
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
@@ -18,6 +19,10 @@ suspend fun <T> apiCall(llamada: suspend () -> T): Result<T> {
         Result.failure(ApiError(0, "No se pudo conectar con el servidor"))
     } catch (e: SerializationException) {
         Result.failure(ApiError(0, "Respuesta inesperada del servidor"))
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        Result.failure(ApiError(0, "Error inesperado: ${e.javaClass.simpleName} - ${e.message}"))
     }
 }
 
